@@ -6,20 +6,18 @@ module.exports = {
 
     async update(request, response){
 
-        const { techs, avatar_url, bio, github_username } = request.body;
+        const { techs, avatar_url, bio, _id } = request.body;
 
-        let dev = await Dev.findOne({ github_username });
-
-
-        
         const techsArray = parseStringAsArray(techs);
         
 
-        dev = await Dev.update({
-            techs: techsArray,
-            avatar_url,
-            bio
-        })
+        dev = await Dev.updateOne({
+            _id: _id
+        },
+        {
+            $set: {techs: techsArray, avatar_url, bio}
+        }
+        )
 
         return response.json(dev);
     },
